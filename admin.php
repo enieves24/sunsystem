@@ -307,54 +307,6 @@ updateAsset(); // Call the update function
       </table>
     </div>
   </section>
-<!--LEAVE REQUEST!-->
-<section id="leave" class="content-section" style="display:none">
-    <h3>Ticketing System</h3>
-    <div class="table-container">
-      <table>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Employee ID</th>
-            <th>Name</th>
-            <th>Department</th>
-            <th>Branch</th>
-            <th>Leave Type</th>
-            <th>Start Date</th>
-            <th>End Date</th>
-            <th>Reason</th>
-            <th>Status</th>
-            <th>Approver</th>
-            <th>Submitted At</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1</td>
-            <td>25008</td>
-            <td>Vern</td>
-            <td>IT</td>
-            <td>Capitol</td>
-            <td>Vacation</td>
-            <td>2025-05-15</td>
-            <td>2025-05-20</td>
-            <td>Labad ang Tiyan</td>
-            <td>Approved</td>
-            <td>Buhing Bato</td>
-            <td>2025-05-20 8:00am</td>
-            <td>
-              <button class="edit-btn">Approve</button>
-              <button class="delete-btn">Denied</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-
-</main>
-
  <!-- Profile Settings -->
 <section id="profile" class="content-section" style="display:none">
   <h3 style="text-align:center; margin-bottom: 20px;">Profile Settings</h3>
