@@ -38,7 +38,6 @@ updateAsset(); // Call the update function
       <ul>
         <li><a href="#" onclick="showSection('assets')">Assets Inventory</a></li>
         <li><a href="#" onclick="showSection('ticketing')">Ticketing System</a></li>
-        <li><a href="#" onclick="showSection('leave')">Leave Request</a></li>
         <li><a href="#" onclick="showSection('profile')">Profile Settings</a></li>
         <li><a href="logout.php">Logout</a></li>
       </ul>
