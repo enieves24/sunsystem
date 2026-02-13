@@ -37,7 +37,7 @@ $sqlDisplay = displayAssets();
         <li><a href="#" onclick="showSection('assets')">Assets Inventory</a></li>
         <li><a href="#" onclick="showSection('ticket')">Tickets</a></li>
         <li><a href="#" onclick="showSection('profile')">Profile Settings</a></li>
-        <li><a href="logout.php">Logout</a></li>
+        <li><a href="logout.php" onclick="return confirm('Are you sure you want to logout?')">Logout</a></li>
       </ul>
     </nav>
   </aside>
