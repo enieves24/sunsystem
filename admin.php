@@ -1,5 +1,6 @@
-<?php session_start(); ?>
 <?php
+session_start();
+
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
@@ -9,16 +10,13 @@ if ($_SESSION['account_type'] !== 'admin') {
     echo "Access denied. Admins only.";
     exit();
 }
-?>
-<?php include 'functions.php'; ?>
-<?php addAssets(); ?>
-<?php $sqlDisplay = displayAssets(); ?>
-<?php
-require_once 'functions.php';
-updateAsset(); // Call the update function
-?>
 
-
+require_once 'db.php';
+require_once 'functions.php'; 
+deleteAssets();
+addAssets();
+$sqlDisplay = displayAssets();
+?>
 
 
 <!DOCTYPE html>
@@ -37,7 +35,7 @@ updateAsset(); // Call the update function
     <nav>
       <ul>
         <li><a href="#" onclick="showSection('assets')">Assets Inventory</a></li>
-        <li><a href="#" onclick="showSection('ticketing')">Ticketing System</a></li>
+        <li><a href="#" onclick="showSection('ticket')">Tickets</a></li>
         <li><a href="#" onclick="showSection('profile')">Profile Settings</a></li>
         <li><a href="logout.php">Logout</a></li>
       </ul>
@@ -119,7 +117,18 @@ updateAsset(); // Call the update function
       <input type="text" name="release_to">
 
       <label>Branch:</label>
-      <input type="text" name="branch_add">
+      <select name="branch_add" id="editBranchAdd" style="border-radius: 4px;padding: 8px;border: 1px solid gray;" required>
+        <option value="">Select Branch</option>
+        <option value="Capitol">Capitol</option>
+        <option value="Talisay">Talisay</option>
+        <option value="Mandaue">Mandaue</option>
+        <option value="CarCar">CarCar</option>
+        <option value="Danao">Danao</option>
+        <option value="Solinea">Solinea</option>
+        <option value="Carbon">Carbon</option>
+        <option value="Bogo">Bogo</option>
+        <option value="Moalboal">Moalboal</option>
+      </select>
 
       <label>Release Date:</label>
       <input type="date" name="release_date">
@@ -135,7 +144,6 @@ updateAsset(); // Call the update function
     </form>
   </div>
 </div>
-
 
 
     <!--END OF MODAL-->
@@ -164,49 +172,50 @@ updateAsset(); // Call the update function
           </tr>
         </thead>
         <tbody>
-          <?php while($results = mysqli_fetch_assoc($sqlDisplay)){ ?>
-          <tr>
-            <td><?php echo $results['code']?></td>
-            <td><?php echo $results['asset_code']?></td>
-            <td><?php echo $results['item_name']?></td>
-            <td><?php echo $results['brand_model']?></td>
-            <td><?php echo $results['description']?></td>
-            <td><?php echo $results['inclusions']?></td>
-            <td><?php echo $results['product_id']?></td>
-            <td><?php echo $results['serial_number']?></td>
-            <td><?php echo $results['imei']?></td>
-            <td><?php echo $results['supplier']?></td>
-            <td><?php echo $results['received_date']?></td>
-            <td><?php echo $results['price']?></td>
-            <td><?php echo $results['release_to']?></td>
-            <td><?php echo $results['branch_add']?></td>
-            <td><?php echo $results['release_date']?></td>
-            <td><?php echo $results['purpose']?></td>
-            <td>
-              <button class="edit-btn" onclick="openEditModal
-              ('<?php echo $results['code']?>', 
-              '<?php echo $results['asset_code']?>', 
-              '<?php echo $results['item_name']?>', 
-              '<?php echo $results['brand_model']?>', 
-              '<?php echo $results['description']?>', 
-              '<?php echo $results['inclusions']?>', 
-              '<?php echo $results['product_id']?>', 
-              '<?php echo $results['serial_number']?>', 
-              '<?php echo $results['imei']?>', 
-              '<?php echo $results['supplier']?>', 
-              '<?php echo $results['received_date']?>', 
-              '<?php echo $results['price']?>', 
-              '<?php echo $results['release_to']?>', 
-              '<?php echo $results['branch_add']?>', 
-              '<?php echo $results['release_date']?>', 
-              '<?php echo $results['purpose']?>')">    
-              Update Assets</button> 
-              
-              <button class="delete-btn">Delete</button>
-            </td>
-          </tr>
-        </tbody>
-        <?php }?>
+  <?php while($results = mysqli_fetch_assoc($sqlDisplay)){ ?>
+  <tr>
+    <td><?php echo $results['code']?></td>
+    <td><?php echo $results['asset_code']?></td>
+    <td><?php echo $results['item_name']?></td>
+    <td><?php echo $results['brand_model']?></td>
+    <td><?php echo $results['description']?></td>
+    <td><?php echo $results['inclusions']?></td>
+    <td><?php echo $results['product_id']?></td>
+    <td><?php echo $results['serial_number']?></td>
+    <td><?php echo $results['imei']?></td>
+    <td><?php echo $results['supplier']?></td>
+    <td><?php echo $results['received_date']?></td>
+    <td><?php echo $results['price']?></td>
+    <td><?php echo $results['release_to']?></td>
+    <td><?php echo $results['branch_add']?></td>
+    <td><?php echo $results['release_date']?></td>
+    <td><?php echo $results['purpose']?></td>
+    <td>
+        <button class="edit-btn" onclick="openEditModalFromButton(
+          '<?php echo addslashes($results['code'])?>', 
+          '<?php echo addslashes($results['asset_code'])?>', 
+          '<?php echo addslashes($results['item_name'])?>', 
+          '<?php echo addslashes($results['brand_model'])?>', 
+          '<?php echo addslashes($results['description'])?>', 
+          '<?php echo addslashes($results['inclusions'])?>', 
+          '<?php echo addslashes($results['product_id'])?>', 
+          '<?php echo addslashes($results['serial_number'])?>', 
+          '<?php echo addslashes($results['imei'])?>', 
+          '<?php echo addslashes($results['supplier'])?>', 
+          '<?php echo addslashes($results['received_date'])?>', 
+          '<?php echo addslashes($results['price'])?>', 
+          '<?php echo addslashes($results['release_to'])?>', 
+          '<?php echo addslashes($results['branch_add'])?>', 
+          '<?php echo addslashes($results['release_date'])?>', 
+          '<?php echo addslashes($results['purpose'])?>')">Update Assets</button>
+          <form method="POST" action="admin.php">      
+            <input type="hidden" name="id" value="<?php echo $results['id']; ?>">
+            <button type="submit" class="delete-btn" name="delete-btn" onclick="return confirm('Delete this item?')">Delete</button>
+          </form>
+      </td>              
+    </tr>
+  <?php }?>
+</tbody>
       </table>
     </div>
   </section>
@@ -271,8 +280,8 @@ updateAsset(); // Call the update function
 </div>
       
   <!-- Ticketing System Section -->
-  <section id="ticketing" class="content-section" style="display:none">
-    <h3>Ticketing System</h3>
+  <section id="ticket" class="content-section" style="display:none">
+    <h3>Tickets</h3>
     <div class="table-container">
       <table>
         <thead>
@@ -297,7 +306,7 @@ updateAsset(); // Call the update function
             <td>Open</td>
             <td>High</td>
             <td>2025-05-15</td>
-            <td>Jane Smith</td>
+            <td>Vern Nieves</td>
             <td>
               <button class="edit-btn">Edit</button>
               <button class="delete-btn">Delete</button>
@@ -312,7 +321,7 @@ updateAsset(); // Call the update function
   <h3 style="text-align:center; margin-bottom: 20px;">Profile Settings</h3>
 
   <div class="button-group">
-    <button onclick="toggleForm('nameForm')">Change Name</button>
+    
     <button onclick="toggleForm('passwordForm')">Change Password</button>
   </div>
 
